@@ -1,14 +1,14 @@
 import java.lang.Math;
 
 public class Body {
+    private static final double G = 6.67e-11; // the gravitational constant
+
     public double xxPos;  // Its current x position
     public double yyPos;  // Its current y position
     public double xxVel;  // Its current velocity in the x direction
     public double yyVel;  // Its current velocity in the y direction
     public double mass;   // Its mass
     public String imgFileName;  // The name of the file that corresponds to the image that depicts the body
-    
-    public static final double G = 6.67e-11;
 
     public Body(double xP, double yP, double xV, double yV, double m, String img) {
         this.xxPos = xP;
@@ -128,6 +128,6 @@ public class Body {
     }
 
     public void draw() {
-        StdDraw.picture(this.xxPos, this.yyPos, NBody.suffix + this.imgFileName);
+        StdDraw.picture(this.xxPos, this.yyPos, "./images/" + this.imgFileName);
     }
 }

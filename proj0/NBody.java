@@ -1,6 +1,6 @@
 public class NBody {
-    public static String suffix = "./images/";
-    public static int scale = 100;
+    private static String suffix = "./images/";
+    private static int scale = 100;
 
     public static double readRadius(String path) {
         In in = new In(path);
@@ -28,7 +28,7 @@ public class NBody {
         return bodys;
     }
 
-    public static void draw(Body[] bodies) {
+    private static void draw(Body[] bodies) {
         StdDraw.clear();
         
         StdDraw.picture(0, 0, suffix + "starfield.jpg");
@@ -40,7 +40,7 @@ public class NBody {
         StdDraw.show();
     }
 
-    public static void printResult(double radius, Body[] bodies){
+    private static void printResult(double radius, Body[] bodies){
         StdOut.printf("%d\n", bodies.length);
         StdOut.printf("%.2e\n", radius);
         for (Body b: bodies) {
