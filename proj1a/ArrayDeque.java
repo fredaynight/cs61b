@@ -65,7 +65,7 @@ public class ArrayDeque<T> {
         nextFirst = first();
         size = size - 1;
 
-        if (isSparse(threshold)) {
+        if (isSparse()) {
             resize(capacity() / factor);
         }
 
@@ -85,17 +85,18 @@ public class ArrayDeque<T> {
         nextLast = last();
         size = size - 1;
 
-        if (isSparse(threshold)) {
+        if (isSparse()) {
             resize(capacity() / factor);
         }
 
         return item;
     }
 
+    /** Resizes the array when deque gets full or too sparse. */
     private void resize(int capacity) {
         T[] newItems = (T[]) new Object[capacity];
 
-        for(int i = 0; i < size(); i++) {
+        for (int i = 0; i < size(); i++) {
             newItems[i] = get(i);
         }
 
@@ -105,13 +106,23 @@ public class ArrayDeque<T> {
     }
 
     /** Returns true if deque is full, false otherwise. */
-    public boolean isFull() {
+    private boolean isFull() {
         return (size() == items.length) ? true : false;
     }
 
     /** Returns true if deque is empty, false otherwise. */
     public boolean isEmpty() {
         return (size() == 0) ? true : false;
+    }
+
+    /** Returns true if array has length 16 or more and reaches the threshold of usage. */
+    private boolean isSparse() {
+        return (capacity() >= 16 && usageRatio() < threshold) ? true : false;
+    }
+
+    /** Returns deque's usage ratio. */
+    private double usageRatio() {
+        return 1.0 * size / items.length;
     }
 
     /**
@@ -123,22 +134,26 @@ public class ArrayDeque<T> {
     }
 
     /** Returns the array's length. */
-    public int capacity() {
+    private int capacity() {
         return items.length;
     }
 
+    /** Returns the head index of the deque. */
     private int first() {
         return updateMark(nextFirst + 1);
     }
 
+    /** Returns the tail index of the deque. */
     private int last() {
         return updateMark(nextLast - 1);
     }
 
+    /** Returns the first item of the deque. */
     private T getFirst() {
         return items[first()];
     }
 
+    /** Returns the last item of the deque. */
     private T getLast() {
         return items[last()];
     }
@@ -164,14 +179,7 @@ public class ArrayDeque<T> {
         return items[updateMark(nextFirst + 1 + index)];
     }
 
-    private boolean isSparse(double limitRatio) {
-        return (capacity() >= 16 && usageRatio() < threshold) ? true : false;
-    }
-
-    private double usageRatio() {
-        return 1.0 * size / items.length;
-    }
-
+    /** Returns transformed index which ensures that array does not overflow. */
     private int updateMark(int mark) {
         if (mark < 0) {
             mark = capacity() + mark;
