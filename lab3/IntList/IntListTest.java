@@ -4,6 +4,21 @@ import org.junit.Test;
 
 public class IntListTest {
 
+    @Test(timeout = 1000)
+    public void testReverse() {
+        IntList actual1 = IntList.reverse(IntList.of(1, 2, 3));
+        IntList actual2 = IntList.reverse(IntList.of(1, 2, 3));
+        IntList actual3 = IntList.of();
+
+        IntList expected1 = IntList.of(3, 2, 1);
+        IntList expected2 = IntList.of(1, 2, 3);
+        IntList expected3 = null;
+
+        assertEquals(expected1, actual1);
+        assertNotEquals(expected2, actual2);
+        assertEquals(expected3,actual3);
+    }
+
     /**
      * Example test that verifies correctness of the IntList.of static
      * method. The main point of this is to convince you that
